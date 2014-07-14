@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Longman Dictionary Components</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script src="./components/platform/platform.js"></script>
+
+    <link rel="import" href="longman-components.html">
+
+    <style>
+      html,body {
+        height: 100%;
+        margin: 0;
+        background-color: #E5E5E5;
+        font-family: 'RobotoDraft', sans-serif;
+        text-align: center;
+    }
+    .box{
+        width: 48%;
+        display: inline-block;
+        border:thick solid purple;
+        padding: 15px;
+    }
+
+</style>
+<script>
+//updateWords runs everytime the input box is changed, and only serves to propogate the new word in the input to the longman elements.
+function updateWords(){
+    console.log('updating words');
+    document.querySelector('longman-basic-definition').word=document.getElementById("inputbox").value;
+    document.querySelector('longman-synonyms').word=document.getElementById("inputbox").value;
+    document.querySelector('longman-related-words').word=document.getElementById("inputbox").value;
+
+}
+</script>
+</head>
+
+<body unresolved>
+ type in a word to get a definition
+ <input type="text" id="inputbox" onchange="updateWords()">
+ <br>
+
+ <div class="box">
+    <h1>Basic Definition</h1>
+    <longman-basic-definition apikey="" word="">
+</longman-basic-definition>
+
+</div>
+<div class="box">
+    <h1>synonyms</h1>
+    <longman-synonyms apikey="" word="">
+</longman-synonyms>
+
+</div>
+<div class="box">
+    <h1>Related Words</h1>
+    <longman-related-words apikey="" word="">
+</longman-related-words>
+
+</div>
+</body>
+
+</html>

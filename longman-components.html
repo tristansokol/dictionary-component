@@ -1,0 +1,141 @@
+﻿<link rel="import" href="./components/polymer/polymer.html">
+<link rel="import" href="./components/core-ajax/core-ajax.html">
+
+<!-- 
+basic definition displays the basic defintion
+optional inputs:
+  apikey:apikey that you have for longman dictionary
+  word:word to look up and define
+  -->
+<polymer-element name="longman-basic-definition" attributes="apikey word" noscript>
+<template>
+  <style>
+    :host{
+      display: block;
+    }
+  </style>
+  <longman-get-definition apikey="{{apikey}}" word="{{word}}" definitionJson="{{JSON}}">
+</longman-get-definition>
+
+<em>{{JSON.results[0].part_of_speech}}</em>:{{JSON.results[0].senses[0].definition}}
+
+</template>
+</polymer-element>
+<!-- 
+synonyms of the selected word
+optional inputs:
+  apikey:apikey that you have for longman dictionary
+  word:word to look up and define
+  -->
+<polymer-element name="longman-synonyms" attributes="apikey word" noscript>
+<template>
+  <style>
+    :host{
+      display: block;
+    }
+  </style>
+  <longman-get-definition synonyms apikey="{{apikey}}" word="{{word}}" definitionJson="{{JSON}}">
+</longman-get-definition>
+
+<em>{{JSON.results[0].part_of_speech}}</em>:{{JSON.results[0].senses[0].definition}}<br>
+<em>{{JSON.results[1].part_of_speech}}</em>:{{JSON.results[1].senses[0].definition}}<br>
+<em>{{JSON.results[2].part_of_speech}}</em>:{{JSON.results[2].senses[0].definition}}<br>
+<em>{{JSON.results[3].part_of_speech}}</em>:{{JSON.results[3].senses[0].definition}}<br>
+<em>{{JSON.results[4].part_of_speech}}</em>:{{JSON.results[4].senses[0].definition}}<br>
+
+</template>
+</polymer-element>
+<!-- 
+words related to the example word
+optional inputs:
+  apikey:apikey that you have for longman dictionary
+  word:word to look up and define
+  -->
+<polymer-element name="longman-related-words" attributes="apikey word" noscript>
+<template>
+  <style>
+    :host{
+      display: block;
+    }
+  </style>
+  <longman-get-definition related apikey="{{apikey}}" word="{{word}}" definitionJson="{{JSON}}">
+</longman-get-definition>
+
+<b>{{JSON.results[0].headword}}</b>:{{JSON.results[0].senses[0].definition}}<br>
+<b>{{JSON.results[1].headword}}</b>:{{JSON.results[1].senses[0].definition}}<br>
+<b>{{JSON.results[2].headword}}</b>:{{JSON.results[2].senses[0].definition}}<br>
+<b>{{JSON.results[3].headword}}</b>:{{JSON.results[3].senses[0].definition}}<br>
+<b>{{JSON.results[4].headword}}</b>:{{JSON.results[4].senses[0].definition}}<br>
+
+</template>
+</polymer-element>
+
+
+<!-- 
+base input component that interacts with the longman dictionary api
+optional inputs:
+  apikey:apikey that you have for longman dictionary
+  word:word to look up and define
+  synonms: whether to look for synonyms or not
+  related: whether to look for related words
+  definitionJson: the returned JSON from the API
+  -->
+<polymer-element name="longman-get-definition" attributes="word synonyms apikey definitionJson related" >
+<template>
+  <style>
+    :host{
+      display: block;
+      height: 100%;
+      width:100%;
+    }
+  </style>
+  <core-ajax
+  auto
+  id="ajax"
+  response="{{definitionJson}}"
+  on-core-response="{{logJson}}"
+  handleAs="json"></core-ajax>
+
+</template>
+<script>
+  Polymer('longman-get-definition', {
+    synonyms: false,
+    related: false,
+    wordChanged: function(){
+      var url = "https://api.pearson.com/v2/dictionaries/entries?"
+      console.log(this.synonyms,this.related);
+      if(this.synonyms){
+        url += "synonyms=";
+      }else if(this.related){
+        url += "related_words=";
+      }
+      else{
+        url +="headword=";
+      }
+      url+= this.word;
+      if(!this.apikey){
+        this.apikey="s9MHY0mfsCFkQDA67mYPQARx52Gdc1Wj";
+      }
+
+      console.log('looking up: '+this.word);
+      this.$.ajax.url = url;
+
+    },
+    logJson: function(){
+      console.log(this.definitionJson);
+    }
+  });
+</script>
+</polymer-element>
+
+
+
+
+
+
+
+
+
+
+
+
