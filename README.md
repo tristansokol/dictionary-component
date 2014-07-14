@@ -6,6 +6,8 @@ This is an example web component that uses the [Longman Dictonary API](https://d
 
 All of the elements can be demoed on the index.html page. This app uses the sandbox API key, so fuctionality is limited (mostly to words starting with a, b, or c) you can apply for your own key to use on the [Longman Dictonary API](https://developer.pearson.com/apis/dictionaries/) page. 
 
+See a demo at http://tristansokol.com/dict/
+
 ##Components:
 
 ###Basic Definition
